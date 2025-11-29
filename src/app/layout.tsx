@@ -33,17 +33,17 @@ export default function RootLayout({
             <div className="flex items-center justify-between h-16">
               <a href="/" className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-primary-600 to-primary-800 rounded-lg flex items-center justify-center">
-                  <svg 
-                    className="w-5 h-5 text-white" 
-                    fill="none" 
-                    stroke="currentColor" 
+                  <svg
+                    className="w-5 h-5 text-white"
+                    fill="none"
+                    stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={2} 
-                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" 
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                     />
                   </svg>
                 </div>
@@ -51,17 +51,6 @@ export default function RootLayout({
                   Retreat
                 </span>
               </a>
-              <nav className="hidden md:flex items-center gap-6">
-                <a href="/" className="text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors">
-                  Browse Venues
-                </a>
-                <a href="#" className="text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors">
-                  How It Works
-                </a>
-                <a href="#" className="btn-primary text-sm">
-                  Contact Us
-                </a>
-              </nav>
             </div>
           </div>
         </header>
