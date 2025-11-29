@@ -1,0 +1,56 @@
+// Prisma Schema for Hotel Venue API
+// This schema defines the database models for venues and booking inquiries
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Venue model representing a hotel/retreat venue
+model Venue {
+  id              String           @id @default(cuid())
+  name            String
+  description     String
+  city            String
+  address         String
+  capacity        Int              // Maximum number of attendees
+  pricePerNight   Float            // Price in USD
+  amenities       String           // JSON string of amenities array
+  imageUrl        String?          // Optional venue image URL
+  rating          Float?           // Optional rating (1-5)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  // Relation to booking inquiries
+  bookingInquiries BookingInquiry[]
+
+  @@index([city])
+  @@index([capacity])
+  @@index([pricePerNight])
+}
+
+// BookingInquiry model for storing venue booking requests
+model BookingInquiry {
+  id            String   @id @default(cuid())
+  venueId       String
+  companyName   String
+  email         String
+  startDate     DateTime
+  endDate       DateTime
+  attendeeCount Int
+  message       String?  // Optional additional message
+  status        String   @default("pending") // pending, confirmed, cancelled
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relation to venue
+  venue         Venue    @relation(fields: [venueId], references: [id], onDelete: Cascade)
+
+  @@index([venueId])
+  @@index([startDate, endDate])
+  @@index([status])
+}
