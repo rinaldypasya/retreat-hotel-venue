@@ -4,10 +4,13 @@ import { venueFiltersSchema } from '@/lib/validations';
 import { parseVenueAmenities } from '@/lib/utils';
 import { PaginatedResponse, VenueWithAmenities } from '@/types';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/venues
  * Returns a paginated list of venues with optional filtering
- * 
+ *
  * Query Parameters:
  * - city: Filter by city name (case-insensitive partial match)
  * - minCapacity: Filter venues with capacity >= this value
