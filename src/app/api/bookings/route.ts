@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // BONUS: Check for overlapping bookings (simple availability check)
+    // BONUS: Check for overlapping bookings and capacity availability
     const startDateTime = new Date(startDate);
     const endDateTime = new Date(endDate);
 
@@ -89,12 +89,24 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    if (overlappingBookings.length > 0) {
+    // Calculate total attendees including the new booking
+    const totalAttendeesForDates = overlappingBookings.reduce(
+      (sum, booking) => sum + booking.attendeeCount,
+      0
+    );
+    const totalWithNewBooking = totalAttendeesForDates + attendeeCount;
+
+    // Check if total attendees would exceed venue capacity
+    if (totalWithNewBooking > venue.capacity) {
       return NextResponse.json(
         {
-          error: 'The venue is not available for the selected dates',
+          error: 'Insufficient capacity for the selected dates',
           details: {
-            dates: ['There is already a booking inquiry for these dates. Please choose different dates.'],
+            dates: [
+              `This venue has ${venue.capacity} total capacity. ` +
+              `There are already ${totalAttendeesForDates} attendees booked for these dates. ` +
+              `Your request for ${attendeeCount} attendees would exceed the available capacity of ${venue.capacity - totalAttendeesForDates}.`
+            ],
           },
         },
         { status: 409 } // Conflict
