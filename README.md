@@ -1,6 +1,6 @@
 # Hotel Venue API & Dashboard
 
-A full-stack venue management system for team offsites and corporate retreats. Built with Next.js, TypeScript, Prisma, and SQLite.
+A full-stack venue management system for team offsites and corporate retreats. Built with Next.js, TypeScript, Prisma, and PostgreSQL.
 
 ![Next.js](https://img.shields.io/badge/Next.js-14-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)
@@ -30,7 +30,7 @@ A full-stack venue management system for team offsites and corporate retreats. B
 
 ### Database
 
-- Prisma ORM with SQLite (easily switchable to PostgreSQL)
+- Prisma ORM with PostgreSQL (recommended for Vercel deployment)
 - Well-designed schema with proper relationships and indexes
 - Database seeded with 10 sample venues
 
@@ -91,6 +91,7 @@ hotel-venue-app/
 
 - Node.js 18+ 
 - npm or yarn
+- PostgreSQL database (or use a cloud provider like Vercel Postgres, Neon, or Supabase)
 
 ### Installation
 
@@ -105,13 +106,32 @@ hotel-venue-app/
    npm install
    ```
 
-3. **Set up environment variables**
+3. **Set up your database**
+   
+   Choose one of these options:
+   
+   **Option A: Vercel Postgres (recommended for deployment)**
+   - Create a project on Vercel
+   - Add Vercel Postgres from the Storage tab
+   - Copy the `DATABASE_URL` from the environment variables
+
+   **Option B: Neon (free tier available)**
+   - Sign up at [neon.tech](https://neon.tech)
+   - Create a new project
+   - Copy the connection string
+
+   **Option C: Local PostgreSQL**
+   - Install PostgreSQL locally
+   - Create a database: `createdb hotel_venue_db`
+   - Use: `postgresql://user:password@localhost:5432/hotel_venue_db`
+
+4. **Set up environment variables**
    ```bash
    cp .env.example .env
    ```
-   The default configuration uses SQLite. For PostgreSQL, update the `DATABASE_URL` in `.env`.
+   Then edit `.env` and add your `DATABASE_URL`.
 
-4. **Initialize the database**
+5. **Initialize the database**
    ```bash
    # Generate Prisma client
    npm run db:generate
@@ -123,12 +143,12 @@ hotel-venue-app/
    npm run db:seed
    ```
 
-5. **Start the development server**
+6. **Start the development server**
    ```bash
    npm run dev
    ```
 
-6. **Open in browser**
+7. **Open in browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ### Available Scripts
@@ -215,7 +235,7 @@ Creates a new booking inquiry.
 
 3. **Zod Validation**: Runtime validation that integrates well with TypeScript for type-safe API input validation.
 
-4. **Tailwind CSS**: Utility-first CSS for rapid, maintainable styling with consistent design tokens.
+4. **PostgreSQL**: Production-ready database that works seamlessly with Vercel's serverless architecture. Supports advanced features like case-insensitive search.
 
 ### Code Quality
 
@@ -272,23 +292,33 @@ Creates a new booking inquiry.
    - OpenAPI/Swagger documentation
    - Storybook for component documentation
 
-## Deployment
+## Deployment on Vercel
 
-The app is ready to deploy on Vercel:
+1. **Push your code to GitHub**
 
-1. Push your code to GitHub
-2. Import the repository in Vercel
-3. Set environment variables:
-   - `DATABASE_URL`: Your PostgreSQL connection string
+2. **Create a Vercel project**
+   - Import your repository at [vercel.com/new](https://vercel.com/new)
+
+3. **Add a PostgreSQL database**
+   - Go to your project's Storage tab
+   - Click "Create Database" → "Postgres"
+   - Vercel will automatically add the `DATABASE_URL` environment variable
+
+4. **Deploy**
+   - Vercel will automatically deploy on push
+   - After deployment, run the seed script (optional):
+     ```bash
+     vercel env pull .env.local  # Pull env vars locally
+     npm run db:push             # Push schema
+     npm run db:seed             # Seed data
+     ```
+
+### Alternative: Using Neon or Supabase
+
+1. Create a database on [Neon](https://neon.tech) or [Supabase](https://supabase.com)
+2. Copy the connection string
+3. Add `DATABASE_URL` to your Vercel project's environment variables
 4. Deploy!
-
-For PostgreSQL, update the Prisma schema datasource provider:
-```prisma
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-```
 
 ---
 
