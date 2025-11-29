@@ -34,19 +34,17 @@ export async function GET(request: NextRequest) {
     const { city, minCapacity, maxPrice, page, limit } = validationResult.data;
 
     // Build the where clause for filtering
-    // Note: SQLite doesn't support 'mode: insensitive', so we use LOWER() for case-insensitive matching
-    // When switching to PostgreSQL, you can use { contains: city, mode: 'insensitive' }
     const where: {
-      city?: { contains: string };
+      city?: { contains: string; mode: 'insensitive' };
       capacity?: { gte: number };
       pricePerNight?: { lte: number };
     } = {};
 
     if (city) {
-      // For SQLite: case-insensitive partial match using contains
-      // SQLite's LIKE is case-insensitive by default for ASCII characters
+      // Case-insensitive partial match for city (PostgreSQL)
       where.city = {
         contains: city,
+        mode: 'insensitive',
       };
     }
 
